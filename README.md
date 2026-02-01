@@ -33,3 +33,135 @@ Banco de dados interno do Make utilizado para armazenar o estado da conversa e o
 Serviço de e-mail usado para enviar o texto gerado caso o usuário opte por receber o resultado na caixa de entrada. Configuramos uma conexão com o Gmail via Make.com, de modo que a automação consiga compor e enviar e-mails em nome do usuário ou de uma conta designada, contendo o conteúdo solicitado.
 
 (Também foram usadas ferramentas auxiliares do Make, como módulos “Tools” e cenários Router, para manipular variáveis e direcionar o fluxo condicionalmente, assegurando que cada resposta do usuário desencadeie a próxima ação apropriada.)
+
+## 🚀 Como Executar o Projeto
+
+Para utilizar o copiloto de IA e gerar seu texto corporativo, siga estes passos simples:
+
+#### Inicie a conversa no Telegram:
+
+Abra o Telegram e procure pelo bot @textoiabot [(clique para iniciar a conversa)](https://t.me/textoiabot). Em seguida, clique em Start ou envie uma mensagem qualquer para começar. O bot deverá responder com uma mensagem de boas-vindas e instruções iniciais.
+
+#### Forneça o tipo de texto desejado:
+
+O bot perguntará qual tipo de texto você quer criar. Responda com o tipo específico, por exemplo: E-mail, Aviso Institucional, Resumo de Reunião etc. Escolha o que melhor se encaixa na sua necessidade atual.
+
+#### Forneça os tópicos ou pontos-chave:
+
+Em seguida, informe os assuntos e detalhes que o texto deve incluir. Você pode escrever uma lista de tópicos, pontos de pauta ou informações importantes que deseja ver no conteúdo. Quanto mais contexto fornecer, mais personalizado será o resultado.
+
+#### Informe o tom de voz: 
+
+O bot irá perguntar qual deve ser o tom do texto. Escreva o estilo desejado, como formal, informal, entusiasmado, objetivo e claro, motivador etc. Esse tom guiará a forma como a IA redige o texto (palavras e estilo adequados).
+
+#### Escolha o canal de entrega: 
+
+Por último, indique onde quer receber o texto gerado. Responda “Telegram” para recebê-lo diretamente no chat do bot, ou “Email” para recebê-lo por e-mail.
+
+Se escolher Telegram, o bot confirmará e iniciará o processamento da sua solicitação imediatamente.
+
+Se escolher Email, o bot pode pedir que você forneça um endereço de e-mail caso ainda não tenha essa informação. Digite seu endereço de e-mail completo (por exemplo, fulano@empresa.com). Certifique-se de que está correto, pois o texto será enviado para esse endereço.
+
+#### Aguarde a geração do texto: 
+
+Após a etapa acima, o bot irá processar suas informações. Ele irá compor o prompt para a IA e aguardar a resposta com o texto pronto. Esse processo geralmente é rápido (alguns segundos), mas pode levar meio minuto ou mais dependendo do tamanho do texto ou da carga nos servidores de IA. Fique no aguardo – o bot indicará que está gerando ou simplesmente não responderá imediatamente até ter o resultado.
+
+#### Receba o texto corporativo: 
+
+Assim que a IA fornecer o resultado, você o receberá pelo canal escolhido:
+
+- Via Telegram: o bot enviará uma mensagem contendo o texto solicitado. Você pode então copiá-lo e utilizá-lo conforme necessário (por exemplo, copiar o texto e colar num e-mail ou documento oficial).
+
+- Via Email: você receberá um e-mail (no endereço fornecido) com o texto no corpo da mensagem. Verifique sua caixa de entrada (e também a pasta de spam, caso não apareça em alguns minutos na principal). O assunto do e-mail indicará que é o texto gerado pela IA e deverá conter o tipo de texto como referência.
+
+Refine ou finalize conforme necessário: O conteúdo gerado deve servir como um rascunho avançado. Você pode utilizá-lo diretamente ou ajustá-lo manualmente se precisar adicionar algum detalhe específico ou adequar o tom. Lembre-se de revisar o texto, garantindo que está 100% alinhado com o que você quer comunicar antes de enviar ou publicar oficialmente.
+
+#### Comandos especiais: 
+
+Durante a conversa, se você precisar cancelar o processo a qualquer momento (por exemplo, desistir de gerar o texto atual ou recomeçar do zero), basta digitar uma palavra-chave como cancelar ou sair. O bot então abortará a sequência de perguntas e limpará os dados já recebidos para aquela solicitação. Você receberá uma confirmação de cancelamento e poderá iniciar uma nova solicitação quando quiser. Se desejar voltar uma etapa (por exemplo, você percebeu que informou o tipo de texto errado e quer corrigi-lo), pode digitar voltar assim que o bot fizer a pergunta seguinte. O fluxo então retornará à pergunta anterior e você poderá fornecer uma nova resposta, substituindo a anterior no Data Store. Esses comandos ajudam a tornar a interação mais flexível e evitar ter que concluir todo o fluxo em caso de engano.
+
+#### Dica: 
+
+Você pode testar diferentes combinações de tipo/tópicos/tom para ver como a IA se adapta a cada contexto. Por exemplo, experimente gerar um aviso institucional com tom motivador, ou um resumo de reunião enfatizando tópicos técnicos com tom formal. Cada variação resultará em um texto único criado para aquela situação.
+
+## Prompt da IA (configuração do agente)
+
+Um dos pontos-chave do projeto é o prompt utilizado para instruir a IA generativa. O prompt foi elaborado em inglês para garantir melhor compreensão por parte da IA; porém, foi estruturado de forma a assegurar que a resposta seja gerada em português do Brasil (PT-BR) e no estilo corporativo adequado. No agente de IA do Make.com, definiu-se uma mensagem com regras claras, orientando o modelo a gerar um texto completo e pronto para uso, a partir das informações estruturadas fornecidas pelo usuário. Em pseudocódigo simplificado, o prompt segue a seguinte estrutura:
+
+```
+  You are a corporate communication assistant specialized in producing clear, assertive and professional corporate messages.
+
+  Write the message in Brazilian Portuguese (PT-BR).
+  
+  Your task is to generate a complete message ready for immediate use, based exclusively on the structured information provided (type of text, topics and tone of voice).
+  
+  The information will be provided in a structured format and must be interpreted exactly as given, without assumptions or extrapolations.
+  
+  Guidelines:
+  1. Use clear, objective and professional language.
+  2. Structure the text with a clear beginning, development and conclusion.
+  3. Adapt the structure strictly according to the type of text:
+     - Email: include subject, greeting, body and proper closing.
+     - Meeting summary: organize the content in short, clear bullet points.
+     - WhatsApp message: keep the text concise, direct and professional.
+     - Institutional or internal communication: use a neutral, inclusive and informative tone.
+  4. Use ONLY the information explicitly provided in the message content.
+  5. If the content refers to scheduling, inviting or confirming a meeting, generate a meeting invitation consistent with the provided information.
+  6. Ignore greetings such as “bom dia”, “olá”, or similar informal openings.
+  7. Apply strictly the requested tone of voice.
+  8. Always finalize the message in a coherent way, using an appropriate closing, signature or call to action when applicable.
+  
+  Strict rules:
+  - Do NOT ask questions.
+  - Do NOT request additional information.
+  - Do NOT say that information is missing or insufficient.
+  - Do NOT invent context, objectives, recipients or subjects.
+  - Do NOT generate generic, unrelated or default institutional content.
+  - Do NOT include emojis, informal language or explanations.
+  - Return ONLY the final text, fully written and ready to be sent.
+```
+No prompt acima:
+
+Tipo de texto define o formato que a IA deve seguir. Por exemplo, se o tipo for Email, o texto deve conter obrigatoriamente assunto, saudação, corpo e encerramento. Se for Meeting summary, a resposta deve ser organizada em tópicos curtos (bullet points). Se for WhatsApp message, a escrita deve ser concisa, direta e profissional. Já em Institutional/internal communication, o tom deve ser neutro, inclusivo e informativo.
+
+Tópicos correspondem ao conteúdo principal que deve aparecer no texto final. O prompt reforça que a IA deve usar somente o que foi informado nos tópicos, evitando inserir detalhes que não foram fornecidos.
+
+Tom de voz é a orientação de estilo (por exemplo, formal, neutro, direto) que deve ser aplicada de forma estrita, garantindo que o texto final siga o tom solicitado pelo usuário.
+
+Essa formulação orienta o modelo de IA a gerar exatamente o texto desejado. Primeiro, o prompt define o papel da IA como assistente corporativo e fixa o idioma em PT-BR. Depois, reforça que o texto deve ser criado com base apenas nas entradas estruturadas, sem “inventar” contexto. Em seguida, o prompt impõe regras de estrutura por tipo de texto e restrições de comportamento para evitar respostas genéricas, perguntas ao usuário ou explicações. Isso garante uma saída final pronta para ser usada imediatamente no ambiente corporativo.
+
+Exemplo de prompt real enviado ao agente: suponha que o usuário pediu um Email, com tópicos “marcação de reunião às 09h de amanhã” e tom “formal”. As informações estruturadas enviadas ao agente seriam:
+
+```
+  Tipo de texto: Email
+  Tópicos: marcação de reunião às 09h de amanhã
+  Tom de voz: formal
+```
+
+A partir disso, a IA gera um e-mail completo em PT-BR com assunto, saudação, corpo e encerramento, mantendo o tom formal e utilizando apenas as informações fornecidas, pronto para envio.
+
+### Observações e limitações
+
+#### Qualidade do modelo (small):
+Optamos por usar o modelo small do Make AI Agent por razões de custo e performance. Ele produz textos bons e coerentes para tarefas simples, porém pode ter limitações em compreensão de contexto muito complexo ou produzir respostas mais genéricas em comparação com modelos maiores (como GPT-4). Nos testes realizados, os resultados atenderam bem às necessidades básicas de textos corporativos, mas é importante revisar o conteúdo antes de uso oficial.
+
+#### Dependência de entrada do usuário:
+A qualidade e acurácia do texto gerado dependem diretamente das informações fornecidas pelo usuário. Instruções vagas ou tópicos pouco claros podem resultar em um texto igualmente genérico. É recomendado que o usuário descreva os pontos principais com algum detalhe para obter um resultado mais preciso e útil.
+
+#### Revisão humana necessária:
+Embora a IA agilize a elaboração, o texto fornecido deve ser visto como um rascunho. Sempre revise o texto gerado antes de enviá-lo ou publicá-lo oficialmente. Verifique se todos os dados estão corretos, se o tom está apropriado e se não há nenhuma incoerência. A IA pode ocasionalmente produzir alguma informação incorreta ou esquecer de incluir algo que foi pedido (especialmente se a lista de tópicos for longa).
+
+#### Limites éticos e de segurança:
+Evite inserir no prompt dados sensíveis ou confidenciais da empresa, pois essas informações estão sendo processadas por um modelo de IA externo. Embora o Make.com ofereça um ambiente seguro, os modelos de linguagem grandes podem reter informações em logs. Portanto, não use o bot para gerar textos que contenham segredos comerciais, dados pessoais protegidos (LGPD) ou informações sigilosas sem as devidas precauções. Além disso, esteja ciente de que modelos de IA podem apresentar vieses ou erros; monitore se o conteúdo gerado está adequado em termos de políticas da empresa e ética profissional.
+
+#### Armazenamento de dados temporário: 
+Os dados coletados (tipo, tópicos, tom, email) são armazenados no Data Store do Make apenas para conduzir a conversa e gerar o texto. Não mantemos um banco de dados permanente dessas informações para outros fins. Ainda assim, recomenda-se não fornecer informações que você não gostaria que ficassem registradas. O e-mail fornecido é usado unicamente para o envio automático do texto e não é compartilhado com terceiros pelo cenário.
+
+#### Fluxo de conversa linear: 
+O bot foi programado para seguir um roteiro pré-definido de perguntas e respostas. Solicitações fora desse contexto podem não ser compreendidas. Por exemplo, se no meio do processo o usuário fizer uma pergunta não relacionada (“Qual a previsão do tempo?”) ou desviar do assunto, o bot provavelmente responderá com uma mensagem padrão de erro ou não entenderá, já que o foco é gerar textos corporativos. Em caso de erro ou mal-entendido, o usuário pode cancelar e começar de novo. Futuras versões poderiam incorporar mais flexibilidade ou compreensão de linguagem natural para sair e retornar ao fluxo principal, mas nesta versão inicial o escopo é intencionalmente limitado.
+
+#### Limitações de formato: 
+O texto gerado pela IA virá em formato bruto (texto simples). Caso seja necessário algum tipo de formatação específica (por exemplo, lista de tópicos com marcadores, ou texto com negrito/itálico), o usuário deverá editar manualmente após receber o rascunho. O prompt atual não inclui instruções de formatação avançada para evitar confusão, mantendo o foco no conteúdo.
+
+#### Disponibilidade do serviço: 
+Por se tratar de uma automação dependente de serviços externos (API do Telegram, servidores do Make.com e modelo de IA), a disponibilidade pode variar. Em raros casos, pode haver lentidão ou falhas se algum desses serviços estiver enfrentando problemas. Se o bot não responder ou demorar muito, aguarde alguns instantes e tente novamente. O cenário foi projetado com certas tratativas de erro simples (por exemplo, um fallback caso a IA demore ou não responda, ou caso o e-mail não seja enviado), mas nem todos os casos são cobertos.
