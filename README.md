@@ -8,6 +8,8 @@ Este projeto demonstra um copiloto de Inteligência Artificial capaz de gerar te
 
 🤖 Bot no Telegram: @textoiabot [(clique para iniciar a conversa)](https://t.me/textoiabot)
 
+📹 Vídeo do projeto: [(clique para assitir ao Vídeo Pitch)](https://youtu.be/1U8lJZmEshY)
+
 ## Como funciona o projeto (visão geral)
 
 O fluxo de automação foi desenvolvido na plataforma Make.com (antigo Integromat) usando diversos módulos integrados. A seguir, explicamos o passo a passo de como a interação acontece do início ao fim:
