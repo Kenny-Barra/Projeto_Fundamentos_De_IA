@@ -36,7 +36,7 @@ O fluxo de automação foi desenvolvido na plataforma Make.com (antigo Integroma
 
 - **Encerramento e reset:** Após enviar o texto, o bot finaliza o fluxo daquela solicitação. O registro correspondente no Data Store pode ser atualizado ou encerrado (marcando que o fluxo foi concluído). O bot então envia uma mensagem de conclusão ou fica pronto para uma nova solicitação. Caso o usuário queira gerar outro texto, basta iniciar novamente o processo. Com o fluxo encerrado, uma nova interação começará do zero, ou seja, será solicitado o tipo do próximo texto e assim por diante.
 
-<img width="1286" height="641" alt="download" src="https://github.com/user-attachments/assets/4226c914-a15c-402f-b5e2-73556eef9096" />
+<img width="1286" height="641" alt="Fluxo Make" src="https://github.com/user-attachments/assets/4fff50a8-5c9e-4236-b6df-9903d6eb4207" />
 
 Diagrama do cenário no Make.com (Make Scenario): O desenho acima ilustra o fluxo implementado. Nele, cada ícone representa uma etapa: começando pelo disparador do Telegram, passando por diversas operações no Data Store (armazenando e recuperando informações do usuário) e uso de routers (condicionais) para direcionar o caminho correto, até chegar no módulo AI Agent (círculo roxo) que gera o texto, seguido dos módulos de envio pelo Telegram ou Email.
 
@@ -49,6 +49,40 @@ Quando o usuário entra em contato pelo Telegram, a automação inicia registran
 Quando todas as informações necessárias estão coletadas no Data Store, o cenário ativa o módulo Make AI Agent para gerar o conteúdo final. Nesse momento, o agente de IA recebe um prompt consolidado com todos os detalhes fornecidos (tipo + tópicos + tom) e possivelmente instruções adicionais para formatar o texto em um contexto corporativo adequado. O modelo de IA então produz o texto solicitado. Assim que a resposta da IA é retornada ao cenário, a automação verifica o canal escolhido pelo usuário. Se for Telegram, o texto gerado é imediatamente enviado de volta ao chat do usuário via módulo do Telegram Bot. Se o canal selecionado for e-mail, o cenário utiliza o módulo Gmail para compor um e-mail contendo o texto e enviá-lo para o endereço fornecido (tudo isso de forma automática).
 
 Por fim, o fluxo realiza qualquer limpeza ou ajuste necessário — por exemplo, marca o registro no Data Store como concluído ou reinicializa o estado daquela conversa. Caso o usuário envie alguma mensagem como “cancelar” no meio do processo, a automação possui lógica de cancelamento que interrompe o fluxo atual e reseta o registro, permitindo começar novamente se desejado. Da mesma forma, se o usuário digitar “voltar” em alguma etapa, o cenário identifica esse comando e pode retornar à pergunta anterior, ajustando o estágio no Data Store para refletir a etapa correta. Esses cuidados garantem que a informação flua de maneira organizada: desde o primeiro contato no Telegram, passando pelo armazenamento estruturado no Data Store, pela geração inteligente via IA, até a entrega final no canal apropriado.
+
+## 🖼️ Imagens do Funcionamento da Solução
+
+### 1️⃣ Início da interação e escolha do tipo de texto
+
+O fluxo se inicia quando o usuário envia qualquer mensagem ao bot. Em seguida, o sistema solicita o tipo de texto que será criado, como e-mail, convite para reunião, mensagem para WhatsApp ou outro formato desejado. Após definir o tipo de texto, o bot solicita os principais tópicos que devem ser abordados na mensagem.
+
+Durante todo o processo, o usuário pode digitar **“voltar”** para retornar à etapa anterior ou **“cancelar”** para encerrar a solicitação.
+
+![Início do fluxo e escolha do tipo de texto](https://github.com/user-attachments/assets/016f1ff7-67f2-4419-bb54-213a93ddcc1d)
+
+### 2️⃣ Definição dos tópicos e escolha do tom de voz
+
+Na sequência, o usuário escolhe o tom de voz desejado, como formal, neutro, objetivo ou acolhedor. Essas informações são armazenadas e utilizadas diretamente pelo agente de IA.
+
+Caso o usuário queira corrigir alguma informação, o comando **“voltar”** permite retornar exatamente para a pergunta anterior.
+
+![Definição de tópicos, uso do voltar e escolha do tom](https://github.com/user-attachments/assets/e700a449-b1b6-4732-86fc-8111abcf4c80)
+
+### 3️⃣ Geração da mensagem e entrega ao usuário
+
+O usuário escolhe o canal de entrega (Telegram ou e-mail) e recebe o texto final pronto para uso, sem necessidade de edições adicionais.
+
+Após a coleta de todas as informações, o agente de IA do Make.com gera automaticamente a mensagem corporativa completa, seguindo rigorosamente as regras definidas no prompt.
+
+![Mensagem final gerada pela IA](https://github.com/user-attachments/assets/c027b00e-bf74-4c67-a748-a19c72e58800)
+
+### 4️⃣ Cancelamento do fluxo pelo usuário
+
+Em qualquer etapa da conversa, o usuário pode digitar **“cancelar”** para encerrar o processo. Ao receber esse comando, o sistema interrompe imediatamente o fluxo, limpa o estado da conversa e envia uma mensagem confirmando o encerramento com sucesso.
+
+Essa funcionalidade evita que o usuário fique preso ao fluxo e garante uma experiência mais flexível e controlada.
+
+![Fluxo encerrado pelo comando cancelar](https://github.com/user-attachments/assets/c66918cb-8515-4d5e-8fa2-ba4e0f3c4413)
 
 ## 🛠️ Tecnologias Utilizadas
 
